@@ -11,9 +11,10 @@ from accounting.controllers.transaction import Transaction
 
 class PurchaseInvoice(Transaction):
 
-	def __init__(self):
-		self.debit_account = self.account
-		self.credit_account = frappe.get_doc("Account", "Sales")
+	def before_submit(self):
+		supplier = frappe.get_doc("Supplier", self.supplier)
+		self.debit_account = supplier.account
+		self.credit_account = "Sales"
 
 	def on_submit(self):
 		self.amount = self.rate * self.quantity
