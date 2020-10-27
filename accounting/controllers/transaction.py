@@ -17,15 +17,17 @@ class Transaction(Document):
 		try:
 			frappe.get_doc(
 				doctype="GL Entry",
-				posting_date=date.today,
+				posting_date=date.today(),
 				account=self.debit_account,
-				debit=amount
+				debit=amount,
+				credit=0
 			).insert()
 			frappe.get_doc(
 				doctype="GL Entry",
-				posting_date=date.today,
+				posting_date=date.today(),
 				account=self.credit_account,
-				credit=amount
+				credit=amount,
+				debit=0
 			).insert()
 		except frappe.exceptions.ValidationError:
 			frappe.db.rollback()
