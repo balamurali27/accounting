@@ -46,15 +46,13 @@ class Account(NestedSet):
 				"account_number": child.get("account_number"),
 				"account_type": child.get("account_type"),
 			})
-			# __import__('pprint').pprint(account.as_dict())
-			account.insert()
+			account.insert(ignore_if_duplicate=True)
 
 			cls._import_accounts(child, account.name, root_type)
 
 	@classmethod
 	def load_tree_from_json(cls, file):
 		"""Load account tree from a standard json file"""
-
 		with open(file, "r") as f:
 			coa: dict = json.load(f)
 		chart: dict = coa["tree"]
