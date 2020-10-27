@@ -3,8 +3,21 @@
 # See license.txt
 from __future__ import unicode_literals
 
-# import frappe
+import frappe
 import unittest
+
+
+def create_test_item(
+	item_name: str = frappe.mock("name"),
+	price: int = 10,
+):
+	return frappe.get_doc({
+		"doctype": "Item",
+		"item_name": item_name,
+		"price": price,
+		"image": frappe.mock("url")
+	}).insert(ignore_if_duplicate=True)
+
 
 class TestItem(unittest.TestCase):
 	pass
