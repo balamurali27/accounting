@@ -11,11 +11,13 @@ from accounting.controllers.transaction import Transaction
 
 class SalesInvoice(Transaction):
 
-	def __init__(self):
-		self.debit_account = frappe.get_doc("Account", "Sales")
-		self.credit_account = self.account
+	def before_submit(self):
+		self.debit_account = "Sales"
+		customer = frappe.get_doc("Customer", self.customer)
+		self.credit_account = customer.account
 
 	def on_submit(self):
-		self.amount = self.item.price * self.quantity
+		item = frappe.get_doc("Item", self.item)
+		self.amount = item.price * self.quantity
 		super().on_submit()
 		# update item qty
