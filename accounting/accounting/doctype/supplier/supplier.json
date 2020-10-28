@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "autoname": "field:supplier_name",
  "creation": "2020-10-26 15:00:40.500137",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -14,7 +15,8 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Supplier Name",
-   "reqd": 1
+   "reqd": 1,
+   "unique": 1
   },
   {
    "default": "Creditors",
@@ -28,7 +30,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2020-10-26 15:32:53.754429",
+ "modified": "2020-10-28 12:09:19.492397",
  "modified_by": "Administrator",
  "module": "Accounting",
  "name": "Supplier",
