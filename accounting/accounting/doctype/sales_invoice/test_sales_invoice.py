@@ -26,7 +26,13 @@ class TestSalesInvoice(TestTransaction):
 	def test_invoice_submission_creates_balanced_gl_entries(self):
 		"""Ensure submitting Sales Invoice creates balanced GL entries."""
 		sales_invoice = get_test_sales_invoice()
+		before = frappe.db.count("GL Entry")
 		sales_invoice.submit()
-		gl_count = frappe.db.count("GL Entry")
-		self.assertEqual(gl_count, 2, msg=frappe.get_all("GL Entry"))
+		after = frappe.db.count("GL Entry")
+		gl_count_increase = after - before
+		self.assertEqual(
+			gl_count_increase,
+			2,
+			msg=frappe.get_all("GL Entry")
+		)
 		self._test_gl_entries_are_balanced()
