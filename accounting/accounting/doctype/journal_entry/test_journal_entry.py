@@ -33,13 +33,39 @@ def get_test_journal_entry(accounts: List):
 
 class TestJournalEntry(TestTransaction):
 
-	def test_invoice_submission_creates_balanced_gl_entries(self):
-		"""Ensure submitting Sales Invoice creates balanced GL entries."""
-		accounts = [get_test_journal_entry_account().as_dict()]
+	def test_journal_submission_creates_balanced_gl_entries(self):
+		"""Ensure submitting JournalEntry creates balanced GL entries."""
+		accounts = [
+			get_test_journal_entry_account(100, 0).as_dict(),
+			get_test_journal_entry_account(0, 100).as_dict()
+		]
 		journal_entry = get_test_journal_entry(accounts)
 		before = frappe.db.count("GL Entry")
+
 		journal_entry.submit()
+
 		after = frappe.db.count("GL Entry")
 		gl_count_increase = after - before
 		self.assertEqual(gl_count_increase, 2, msg=frappe.get_all("GL Entry"))
 		self._test_gl_entries_are_balanced()
+
+	def test_exception_is_thrown_if_accounting_entries_arent_balanced(self):
+		"""
+		Ensure submitting JournalEntry with unbalanced accounting entries throws err.
+		"""
+		accounts = [
+			get_test_journal_entry_account(100, 0).as_dict(),
+		]
+		journal_entry = get_test_journal_entry(accounts)
+		self.assertRaises(
+			frappe.exceptions.ValidationError, journal_entry.submit
+		)
+		accounts = [
+			get_test_journal_entry_account(100, 0).as_dict(),
+			get_test_journal_entry_account(0, 100).as_dict(),
+			get_test_journal_entry_account(0, 100).as_dict(),
+		]
+		journal_entry = get_test_journal_entry(accounts)
+		self.assertRaises(
+			frappe.exceptions.ValidationError, journal_entry.submit
+		)
