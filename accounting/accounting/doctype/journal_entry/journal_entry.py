@@ -3,22 +3,21 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
-from frappe import _
-from datetime import date
 
 import frappe
+from frappe import _
 
-from frappe.model.document import Document
+from accounting.controllers.transaction import Transaction
 
 
-class JournalEntry(Document):
+class JournalEntry(Transaction):
 
 	def _check_for_balanced_entries(self):
 		debit_sum = 0
 		credit_sum = 0
-		for account in self.accounts:
-			debit_sum += account.debit
-			credit_sum += account.credit
+		for entry in self.accounts:
+			debit_sum += entry.debit
+			credit_sum += entry.credit
 		if debit_sum != credit_sum:
 			frappe.throw(
 				msg=_(
@@ -31,14 +30,10 @@ class JournalEntry(Document):
 		self._check_for_balanced_entries()
 
 	def _make_gl_entries_for_accounts(self):
-		for account in self.accounts:
-			frappe.get_doc(
-				doctype="GL Entry",
-				posting_date=date.today(),
-				account=account.account,
-				debit=account.debit,
-				credit=account.credit
-			).insert()
+		for entry in self.accounts:
+			self._make_gl_entry(
+				account=entry.account, debit=entry.debit, credit=entry.credit
+			)
 
 	def on_submit(self):
 		self._make_gl_entries_for_accounts()
