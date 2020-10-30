@@ -55,9 +55,10 @@
    "options": "DocType"
   }
  ],
+ "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2020-10-26 11:07:34.156128",
+ "modified": "2020-10-30 08:13:50.152881",
  "modified_by": "Administrator",
  "module": "Accounting",
  "name": "GL Entry",
