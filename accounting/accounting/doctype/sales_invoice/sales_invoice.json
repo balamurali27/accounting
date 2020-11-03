@@ -5,20 +5,11 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "item",
-  "quantity",
+  "items",
   "customer",
   "amended_from"
  ],
  "fields": [
-  {
-   "fieldname": "item",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Item",
-   "options": "Item",
-   "reqd": 1
-  },
   {
    "fieldname": "customer",
    "fieldtype": "Link",
@@ -37,17 +28,17 @@
    "read_only": 1
   },
   {
-   "default": "1",
-   "fieldname": "quantity",
-   "fieldtype": "Int",
-   "label": "Quantity",
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Sales Invoice Item",
    "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2020-10-26 15:18:47.358954",
+ "modified": "2020-11-03 11:19:31.030666",
  "modified_by": "Administrator",
  "module": "Accounting",
  "name": "Sales Invoice",

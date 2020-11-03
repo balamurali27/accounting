@@ -19,4 +19,3 @@ class PurchaseInvoice(Transaction):
 	def on_submit(self):
 		self.amount = self.rate * self.quantity
 		super().on_submit()
-		# update item qty

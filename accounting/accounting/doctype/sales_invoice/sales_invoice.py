@@ -17,7 +17,8 @@ class SalesInvoice(Transaction):
 		self.credit_account = customer.account
 
 	def on_submit(self):
-		item = frappe.get_doc("Item", self.item)
-		self.amount = item.price * self.quantity
+		self.amount = 0
+		for sales_invoice_item in self.items:
+			item = frappe.get_doc("Item", sales_invoice_item.item)
+			self.amount += item.price * sales_invoice_item.quantity
 		super().on_submit()
-		# update item qty
