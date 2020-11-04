@@ -3,12 +3,8 @@
 
 frappe.ui.form.on('Journal Entry', {
 	refresh: function (frm) {
-		console.log(frm.doc.name);
-		frm.add_custom_button(__('Accounting Ledger'), function () {
-			frappe.set_route('query-report', 'General Ledger', {
-				voucher_type: 'Journal Entry',
-				voucher_no: frm.doc.name,
-			});
+		frappe.require('/assets/accounting/js/utils.js', () => {
+			add_accounting_ledger_btn(frm);
 		});
 	},
 });
