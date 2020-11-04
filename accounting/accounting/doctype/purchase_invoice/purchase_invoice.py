@@ -17,5 +17,7 @@ class PurchaseInvoice(Transaction):
 		self.credit_account = "Sales"
 
 	def on_submit(self):
-		self.amount = self.rate * self.quantity
+		self.amount = 0
+		for purchase_invoice_item in self.items:
+			self.amount += purchase_invoice_item.rate * purchase_invoice_item.quantity
 		super().on_submit()

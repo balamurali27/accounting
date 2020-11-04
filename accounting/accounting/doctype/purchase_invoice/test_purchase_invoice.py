@@ -11,6 +11,17 @@ from ..item.test_item import create_test_item
 from ..supplier.test_supplier import create_test_supplier
 
 
+def get_test_purchase_invoice_item(
+	item=create_test_item(), rate: float = 10, quantity: int = 1
+):
+	return frappe.get_doc({
+		"doctype": "Purchase Invoice Item",
+		"item": item.name,
+		"rate": 10,
+		"quantity": quantity,
+	})
+
+
 def get_test_purchase_invoice(
 	item=create_test_item(), supplier=create_test_supplier()
 ):
@@ -27,7 +38,11 @@ class TestPurchaseInvoice(TestTransaction):
 
 	def test_invoice_submission_creates_balanced_gl_entries(self):
 		"""Ensure submitting Purchase Invoice creates balanced GL entries."""
-		purchase_invoice = get_test_purchase_invoice()
+		purchase_invoice_items = [
+			get_test_purchase_invoice_item().as_dict(),
+			get_test_purchase_invoice_item().as_dict()
+		]
+		purchase_invoice = get_test_purchase_invoice(purchase_invoice_items)
 		before = frappe.db.count("GL Entry")
 		purchase_invoice.submit()
 		after = frappe.db.count("GL Entry")
