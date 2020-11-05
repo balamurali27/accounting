@@ -41,7 +41,6 @@ function showInvoicePDF(res) {
 		'/api/method/frappe.utils.print_format.download_pdf?doctype=Sales%20Invoice&';
 	url += 'name=' + doc.name + '&';
 	url += 'format=Sales%20Invoice&no_letterhead=0&_lang=en';
-	window.location.href = url;
 	win = window.open(url, '_blank');
   win.focus();
 }
