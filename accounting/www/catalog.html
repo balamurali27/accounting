@@ -1,0 +1,19 @@
+<h1>Item List</h1>
+{%for item in items%}
+<section class="py-8 row">
+	<figure class="col-sm-3">
+		<img src="{{item.image}}" alt="{{item.item_name}}" />
+	</figure>
+
+	<article class="col">
+		<header>{{item.item_name}}</header>
+		<p>{{item.price}} Rs.</p>
+		<p class="text-muted"> {{item.description}} </p>
+		<input class="form-control cart-item-qty" type="number" id="{{item.name}}" />
+	</article>
+</section>
+{%endfor%}
+<button id="buy-btn" class="btn btn-primary">Buy</button>
+<script charset="utf-8">
+	window.csrf_token = "{{frappe.session.csrf_token}}";
+</script>
