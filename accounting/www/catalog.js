@@ -21,10 +21,7 @@ function createSalesInvoice(cart) {
 		headers: api_req_headers,
 	};
 	let url = document.location.origin + '/api/resource/Sales%20Invoice';
-	fetch(url, options)
-		.then(validateResponse)
-		.then(showInvoicePDF)
-		.catch((err) => console.log(err));
+	fetch(url, options).then(validateResponse).then(showInvoicePDF);
 }
 
 function validateResponse(res) {
@@ -59,8 +56,7 @@ async function getCustomer(user) {
 
 	return fetch(url)
 		.then(validateResponse)
-		.then((res) => (res.data.length > 0 ? res.data[0].name : null))
-		.catch((err) => console.log(err));
+		.then((res) => (res.data.length > 0 ? res.data[0].name : null));
 }
 
 async function createCustomer(user) {
@@ -71,9 +67,7 @@ async function createCustomer(user) {
 		headers: api_req_headers,
 	};
 	let url = document.location.origin + '/api/resource/Customer';
-	return fetch(url, options)
-		.then(validateResponse)
-		.catch((err) => console.log(err));
+	return fetch(url, options).then(validateResponse);
 }
 
 async function getUser() {
@@ -81,8 +75,7 @@ async function getUser() {
 		document.location.origin + '/api/method/frappe.auth.get_logged_user';
 	return fetch(url)
 		.then(validateResponse)
-		.then((res) => res.message)
-		.catch((err) => console.log(err));
+		.then((res) => res.message);
 }
 
 async function setCustomer(user) {
@@ -92,8 +85,7 @@ async function setCustomer(user) {
 }
 
 async function orderCart() {
-	user = await getUser();
-	customer = await setCustomer(user);
+	customer = await getUser().then(setCustomer);
 	cart_item_qtys = document.querySelectorAll('.cart-item-qty');
 	cart = {};
 	cart.items = [];
