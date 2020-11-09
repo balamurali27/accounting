@@ -79,8 +79,8 @@ async function getUser() {
 }
 
 async function setCustomer(user) {
-	customer = getCustomer(user);
-	if (!customer) customer = createCustomer(user);
+	customer = await getCustomer(user);
+	if (!customer) customer = await createCustomer(user);
 	return customer;
 }
 
