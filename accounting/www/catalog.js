@@ -11,10 +11,11 @@ if (window.csrf_token)
 function addItemToCart(cart, item_qty) {
 	item = item_qty.id;
 	qty = item_qty.valueAsNumber;
+	if (qty === 0) return;
 	cart.items.push({ item: item, quantity: qty });
 }
 
-function createSalesInvoice(cart) {
+async function createSalesInvoice(cart) {
 	const options = {
 		method: 'POST',
 		body: JSON.stringify(cart),
@@ -91,8 +92,12 @@ async function orderCart() {
 	cart.items = [];
 	for (i = 0; i < cart_item_qtys.length; i++)
 		addItemToCart(cart, cart_item_qtys[i]);
+	if (cart.items.length === 0) {
+		frappe.msgprint('Please add items to your cart');
+		return;
+	}
 	cart.customer = customer;
 	//to submit document
 	cart.docstatus = true;
-	createSalesInvoice(cart);
+	await createSalesInvoice(cart);
 }
